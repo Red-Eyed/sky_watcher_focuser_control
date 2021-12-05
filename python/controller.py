@@ -15,7 +15,7 @@ from serial.tools import list_ports
 logger = logging.getLogger(__name__)
 
 
-class Focuser:
+class FocuserController:
     @cached_property
     def ports(self):
         ports = list_ports.comports()
@@ -28,6 +28,7 @@ class Focuser:
         handshake_req = "who are you?"
         handshake_resp = "focuser"
 
+        # Avoid arduino board from resetting on Serial connection
         ser = serial.Serial()
         ser.baudrate = baudrate
         ser.port = port.device
@@ -63,5 +64,5 @@ class Focuser:
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    f = Focuser()
+    f = FocuserController()
     f.find_focuser_port()
