@@ -1,9 +1,8 @@
 #include <Arduino.h>
 
 String msg;
-bool device_initialized = false;
 
-unsigned long BAUD_RATE = 115200;
+unsigned long BAUD_RATE = 9600;
 
 uint8_t FORWARD_PIN1 = PD2;
 uint8_t FORWARD_PIN2 = PD3;
@@ -37,13 +36,9 @@ void backward_stop()
 
 void handshake(String msg)
 {
-    if (!device_initialized)
+    if (msg.equals("who are you?"))
     {
-        msg.trim();
-        if (msg.equals("who are you?"))
-        {
-            Serial.print("focuser\n");
-        }
+        Serial.print("focuser\n");
     }
 }
 
@@ -101,10 +96,7 @@ void setup()
 void loop()
 {
     msg = receive();
-    if (msg.length() > 0)
-    {
-        handshake(msg);
-        echo(msg);
-        focuser_control(msg);
-    }
+
+    handshake(msg);
+    // focuser_control(msg);
 }
